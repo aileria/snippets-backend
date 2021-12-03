@@ -117,27 +117,40 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+* Node
   ```sh
   npm install npm@latest -g
   ```
 
+* Angular CLI
+  ```sh
+  npm install -g @angular/cli
+  ```
+
+* Python
+  ```sh
+  version 3.8.3
+  ```
+
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+_Below is an example of how you can install the current project requirements:_
+1. Clone the repo
    ```sh
    git clone https://github.com/your_username_/Project-Name.git
    ```
-3. Install NPM packages
+2. Install pip
    ```sh
-   npm install
+   python get-pip.py
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Install Django
+   ```sh
+   pip install django
+   ```
+   
+4. Install the requirements
+   ```sh
+   pip install -r requirements.txt
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -147,9 +160,9 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Usage use cases.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](https://doc.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -158,15 +171,14 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/Adrian-2316/Snippet-Management/issues) for a full list of proposed features (and known issues).
+- [x] Add Readme.md
+- [x] Define backend project structure
+- [x] Add SQLite
+- [x] Add django CRUDs
+- [ ] Add Angular structure
+- [ ] Define frontend project structure
+- [ ] Learn more Angular :)
+- [ ] Add Additional Templates 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -202,9 +214,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/user/repo_name](https://github.com/user/repo_name)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
