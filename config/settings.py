@@ -152,4 +152,5 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Snip API',
     'DESCRIPTION': 'Snippet Management -  https://github.com/Adrian-2316/Snippet-Management',
     'VERSION': '0.0.1',
+    'SCHEMA_PATH_PREFIX': r'/api/',
 }
