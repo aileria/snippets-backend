@@ -1,9 +1,6 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from .serializers import FullSnippetSerializer, SnippetFileSerializer, SnippetSerializer
 from .models import Snippet, SnippetFile
-
-from rest_framework import viewsets
-from rest_framework import permissions
 
 class BaseModelViewSet(viewsets.ModelViewSet):
     queryset = ''
@@ -15,6 +12,7 @@ class BaseModelViewSet(viewsets.ModelViewSet):
         'list': permission_classes,
         'retrieve': permission_classes,
         'update': permission_classes,
+        'partial_update': permission_classes,
         'destroy': permission_classes,
     }
 
@@ -38,8 +36,8 @@ class SnippetViewSet(BaseModelViewSet):
     permission_classes_by_action = {
         "create": (permissions.IsAuthenticated,),
         "update": (permissions.IsAuthenticated,),
+        'partial_update': (permissions.IsAuthenticated,),
         "destroy": (permissions.IsAuthenticated,),
-        # "custom_action": (CustomPermission,),
     }
 
     def get_serializer_class(self):
@@ -55,5 +53,6 @@ class SnippetFileViewSet(BaseModelViewSet):
     permission_classes_by_action = {
         "create": (permissions.IsAuthenticated,),
         "update": (permissions.IsAuthenticated,),
+        'partial_update': (permissions.IsAuthenticated,),
         "destroy": (permissions.IsAuthenticated,),
     }
