@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'authentication',
     'snippets',
+    'technologies',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

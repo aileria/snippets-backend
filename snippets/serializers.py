@@ -1,12 +1,17 @@
 from rest_framework import serializers
+
+from technologies.serializers import TechnologySerializer
 from .models import Snippet, SnippetFile
 
 class SnippetSerializer(serializers.ModelSerializer):
+    technologies = TechnologySerializer(many=True)
+    
     class Meta:
         model = Snippet
         fields = ('id',
                   'name',
-                  'description')
+                  'description',
+                  'technologies')
 
 class SnippetFileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,6 +21,7 @@ class SnippetFileSerializer(serializers.ModelSerializer):
                   'content')
 
 class FullSnippetSerializer(serializers.ModelSerializer):
+    technologies = TechnologySerializer(many=True)
     files = SnippetFileSerializer(many=True)
 
     class Meta:
@@ -23,6 +29,7 @@ class FullSnippetSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'name',
                   'description',
+                  'technologies',
                   'files')
 
     def create(self, validated_data):
