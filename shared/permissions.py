@@ -3,7 +3,7 @@ from rest_framework import permissions
 
 class IsOwner(permissions.BasePermission):
     """
-    Permission to only allow owners of an object to edit it.
+    Allows access only to the owner of the object.
     """
 
     def has_permission(self, request, view):
