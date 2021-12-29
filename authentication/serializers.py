@@ -1,9 +1,11 @@
 from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth.models import User
 from rest_framework.fields import SerializerMethodField
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from authentication.utils import get_user_tokens
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
     token = SerializerMethodField()

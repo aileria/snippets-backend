@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'authentication',
     'snippets',
     'technologies',
+    'users',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -79,6 +80,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+AUTH_USER_MODEL = 'users.User'
 
 
 # Database
@@ -151,7 +154,7 @@ SIMPLE_JWT = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Snip API',
-    'DESCRIPTION': 'Snippet Management -  https://github.com/Adrian-2316/Snippet-Management',
+    'DESCRIPTION': 'Snippet Management',
     'VERSION': '0.0.1',
     'SCHEMA_PATH_PREFIX': r'/api/',
 }
