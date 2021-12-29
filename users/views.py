@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from rest_framework import permissions
+from shared.views import BaseModelViewSet
+from .serializers import UserSerializer
+from .models import User
 
-# Create your views here.
+class UserViewSet(BaseModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
+    permission_classes_by_action = {
+        "create": (permissions.IsAuthenticated,),
+        "update": (permissions.IsAuthenticated,),
+        'partial_update': (permissions.IsAuthenticated,),
+        "destroy": (permissions.IsAuthenticated,),
+    }
