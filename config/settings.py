@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'authentication',
-    'snippets',
-    'technologies',
     'users',
+    'snippets',
+    'topics',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

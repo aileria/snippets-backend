@@ -11,5 +11,5 @@ urlpatterns = [
    path('api/auth/', include('authentication.urls')),
    path('api/users/', include('users.urls')),
    path('api/snippets/', include('snippets.urls')),
-   path('api/technologies/', include('technologies.urls')),
+   path('api/topics/', include('topics.urls')),
 ]

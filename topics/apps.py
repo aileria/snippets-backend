@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
-class TechnologiesConfig(AppConfig):
+
+class TopicsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'technologies'
+    name = 'topics'
