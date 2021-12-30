@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions
 
-class BaseModelViewSet(viewsets.ModelViewSet):
+
+class BaseViewSet(viewsets.GenericViewSet):
     queryset = ''
     serializer_class = ''
     permission_classes = (permissions.AllowAny,)
@@ -26,3 +27,6 @@ class BaseModelViewSet(viewsets.ModelViewSet):
                 permission_classes = None
 
             return [permission() for permission in (permission_classes or self.permission_classes)]
+
+class BaseModelViewSet(viewsets.ModelViewSet, BaseViewSet):
+    pass

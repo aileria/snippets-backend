@@ -1,10 +1,11 @@
-from rest_framework import permissions
+from rest_framework import mixins, permissions
 from shared.views import BaseModelViewSet
 from .serializers import TopicSerializer
 from .models import Topic
 
 
 class TopicViewSet(BaseModelViewSet):
+
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 

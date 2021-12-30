@@ -1,21 +1,23 @@
-from rest_framework import permissions
+from rest_framework import mixins, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from shared.permissions import IsOwner
-from shared.views import BaseModelViewSet
+from shared.views import BaseViewSet
 from .serializers import UserSerializer
 from .models import User
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
 
 
-class UserViewSet(BaseModelViewSet):
+class UserViewSet(BaseViewSet,
+                  mixins.UpdateModelMixin,
+                  mixins.DestroyModelMixin):
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
     permission_classes_by_action = {
-        "create": (permissions.IsAdminUser | IsOwner,),
         "update": (permissions.IsAdminUser | IsOwner,),
         'partial_update': (permissions.IsAdminUser | IsOwner,),
         "destroy": (permissions.IsAdminUser | IsOwner,),
