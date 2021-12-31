@@ -4,13 +4,14 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from shared.permissions import IsOwner
 from shared.views import BaseViewSet
-from .serializers import UserSerializer
+from .serializers import MeUserSerializer, UpdateUserSerializer, UserSerializer
 from .models import User
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
 
 
 class UserViewSet(BaseViewSet,
+                  mixins.ListModelMixin,
                   mixins.UpdateModelMixin,
                   mixins.DestroyModelMixin):
 
@@ -23,10 +24,25 @@ class UserViewSet(BaseViewSet,
         "destroy": (permissions.IsAdminUser | IsOwner,),
     }
 
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve'):
+            return SnippetSerializer
+        elif self.action in ('update', 'partial_update'):
+            return UpdateUserSerializer
+        elif self.action in ('get_current_user'):
+            return MeUserSerializer
+        else:
+            return UserSerializer
+
     @action(methods=["get"], detail=False, url_path='(?P<username>[^/.]+)', url_name="user")
     def get_user_by_username(self, request, username):
         user = get_object_or_404(User, username=username)
         serializer = self.get_serializer(user)
+        return Response(serializer.data)
+    
+    @action(methods=["get"], detail=False, url_path='me', url_name="me")
+    def get_current_user(self, request):
+        serializer = self.get_serializer(request.user)
         return Response(serializer.data)
 
     @action(methods=["get"], detail=False, url_path='(?P<username>[^/.]+)/snippets', url_name="snippets")
