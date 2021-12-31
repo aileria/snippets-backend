@@ -1,4 +1,4 @@
-from rest_framework import permissions, mixins
+from rest_framework import permissions
 from shared.views import BaseModelViewSet
 from .serializers import FullSnippetSerializer, SnippetFileSerializer, SnippetSerializer
 from .models import Snippet, SnippetFile
@@ -7,20 +7,19 @@ from .models import Snippet, SnippetFile
 class SnippetViewSet(BaseModelViewSet):
 
     queryset = Snippet.objects.all()
-    serializer_class = SnippetSerializer
 
-    permission_classes_by_action = {
-        "create": (permissions.IsAuthenticated,),
-        "update": (permissions.IsAuthenticated,),
-        'partial_update': (permissions.IsAuthenticated,),
-        "destroy": (permissions.IsAuthenticated,),
+    serializer_class = SnippetSerializer
+    serializer_classes_by_action = {
+        'create': FullSnippetSerializer,
+        'retrieve': FullSnippetSerializer,
     }
 
-    def get_serializer_class(self):
-        if self.action in ('create', 'retrieve'):
-            return FullSnippetSerializer
-        else:
-            return SnippetSerializer
+    permission_classes_by_action = {
+        'create': (permissions.IsAuthenticated,),
+        'update': (permissions.IsAuthenticated,),
+        'partial_update': (permissions.IsAuthenticated,),
+        'destroy': (permissions.IsAuthenticated,),
+    }
 
 
 class SnippetFileViewSet(BaseModelViewSet):
@@ -29,8 +28,8 @@ class SnippetFileViewSet(BaseModelViewSet):
     serializer_class = SnippetFileSerializer
 
     permission_classes_by_action = {
-        "create": (permissions.IsAuthenticated,),
-        "update": (permissions.IsAuthenticated,),
+        'create': (permissions.IsAuthenticated,),
+        'update': (permissions.IsAuthenticated,),
         'partial_update': (permissions.IsAuthenticated,),
-        "destroy": (permissions.IsAuthenticated,),
+        'destroy': (permissions.IsAuthenticated,),
     }

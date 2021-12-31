@@ -20,7 +20,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
                   'last_name')
 
 
-class MeUserSerializer(serializers.ModelSerializer):
+class FullUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id',
