@@ -11,6 +11,8 @@ class DynamicSerializersMixin:
     serializer_classes_by_action = None
 
     def get_serializer_class(self):
+        if not self.serializer_classes_by_action:
+            return self.serializer_class
         return self.serializer_classes_by_action.get(self.action, self.serializer_class)
 
 

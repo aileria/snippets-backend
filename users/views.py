@@ -9,8 +9,15 @@ from .serializers import FullUserSerializer, UpdateUserSerializer, UserSerialize
 from .models import User
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
 
+@extend_schema_view(
+    list=extend_schema(description='Get paginated list of users.'),
+    update=extend_schema(description='Update user data.'),
+    partial_update=extend_schema(description='Partially update user data.'),
+    destroy=extend_schema(description='Delete a user.'),
+)
 class UserViewSet(DynamicSerializersMixin,
                   DynamicPermissionsMixin,
                   mixins.ListModelMixin,
@@ -36,18 +43,22 @@ class UserViewSet(DynamicSerializersMixin,
 
     @action(methods=["get"], detail=False, url_path='(?P<username>[^/.]+)', url_name="user")
     def get_user_by_username(self, request, username):
+        """Get user data by username."""
+
         user = get_object_or_404(User, username=username)
         serializer = self.get_serializer(user)
         return Response(serializer.data)
 
     @action(methods=["get"], detail=False, url_path='me', url_name="me")
     def get_current_user(self, request):
+        """Get currently logged user data."""
 
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
 
     @action(methods=["get"], detail=False, url_path='(?P<username>[^/.]+)/snippets', url_name="snippets")
     def get_user_snippets(self, request, username):
+        """Get snippets created by the specified user."""
 
         user_snippets = Snippet.objects.all().filter(user__username=username)
 
