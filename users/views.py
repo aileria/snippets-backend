@@ -32,6 +32,7 @@ class UserViewSet(DynamicSerializersMixin,
         'update': (permissions.IsAdminUser | IsOwner,),
         'partial_update': (permissions.IsAdminUser | IsOwner,),
         'destroy': (permissions.IsAdminUser | IsOwner,),
+        'get_current_user': (permissions.IsAuthenticated,),
     }
 
     serializer_classes_by_action = {
