@@ -1,7 +1,7 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import permissions
 from shared.views import BaseModelViewSet
-from .serializers import FullSnippetSerializer, SnippetFileSerializer, SnippetSerializer
+from .serializers import FullSnippetSerializer, FullSnippetWriteSerializer, SnippetFileSerializer, SnippetSerializer
 from .models import Snippet, SnippetFile
 
 
@@ -19,7 +19,9 @@ class SnippetViewSet(BaseModelViewSet):
 
     serializer_class = SnippetSerializer
     serializer_classes_by_action = {
-        'create': FullSnippetSerializer,
+        'create': FullSnippetWriteSerializer,
+        'update': FullSnippetWriteSerializer,
+        'partial_update': FullSnippetWriteSerializer,
         'retrieve': FullSnippetSerializer,
     }
 
