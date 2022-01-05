@@ -61,7 +61,7 @@ class UserViewSet(DynamicSerializersMixin,
     def get_user_snippets(self, request, username):
         """Get snippets created by the specified user."""
 
-        user_snippets = Snippet.objects.all().filter(user__username=username)
+        user_snippets = Snippet.objects.all().filter(user__username=username).order_by('-id')
 
         page = self.paginate_queryset(user_snippets)
         if page is not None:
