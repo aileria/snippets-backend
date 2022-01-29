@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from . import __version__ as APP_VERSION
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
@@ -150,8 +151,8 @@ SIMPLE_JWT = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Snip API',
-    'DESCRIPTION': 'Snippet Management',
-    'VERSION': '0.0.1',
+    'DESCRIPTION': 'Snippet Management backend project - https://github.com/Snippet-Management/Snippet-Backend',
+    'VERSION': APP_VERSION,
     'SCHEMA_PATH_PREFIX': r'/api/',
 }
 
