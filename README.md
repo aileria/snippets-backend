@@ -1,6 +1,5 @@
 <div id="top"></div>
 
-
 <!-- PROJECT SHIELDS -->
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -10,18 +9,14 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
-![Anaconda](https://img.shields.io/badge/Anaconda-%2344A833.svg?style=for-the-badge&logo=anaconda&logoColor=white)
-![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white)
-![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
-![Jenkins](https://img.shields.io/badge/jenkins-%232C5263.svg?style=for-the-badge&logo=jenkins&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
+![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=darkgreen)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
-![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
+![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white)
+
 <!--https://github.com/Ileriayo/markdown-badges-->
 
 <!-- PROJECT LOGO -->
@@ -31,23 +26,19 @@
     <img src="images/logo.png" alt="Logo" width="180" height="180">
   </a>
 
-  <h3 align="center">Snippet Management</h3>
+  <h3 align="center">Snip</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    A modern snippet management web application
     <br />
-    <a href=""><strong>Explore the docs »</strong></a>
+    <a href="https://snippet-management.herokuapp.com/api/schema/swagger-ui"><strong>Explore the API (hosted by Heroku) »</strong></a>
     <br />
     <br />
-    <a href="https://url.com">View Demo</a>
+    <a href="https://github.com/Snippet-Management/Snippet-Backend/labels/bug">Report Bug</a>
     ·
-    <a href="https://github.com/git/project/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/git/project/issues">Request Feature</a>
+    <a href="https://github.com/Snippet-Management/Snippet-Backend/labels/enhancement">Request Feature</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -66,124 +57,83 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#built-with">Built With</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
-
-
-<!-- ABOUT THE PROJECT -->
 ## About The Project
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-Lorem:
-* Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-* Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-* Lorem Ipsum is simply dummy text of the printing and typesetting industry. :smile:
-
- `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 ### Built With
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-
-* [Python](https://www.python.org/)
-* [Jenkins](https://www.jenkins.io/)
-* [Angular](https://angular.io/)
-* [Heroku](https://www.heroku.com/)
-* [Django](https://www.djangoproject.com/)
+- [Python](https://www.python.org/)
+- [Django](https://www.djangoproject.com/)
+- [Django REST framework](https://www.django-rest-framework.org/)
+- [Swagger](https://swagger.io/)
+- [Heroku](https://www.heroku.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* Node
-  ```sh
-  npm install npm@latest -g
-  ```
+- Python
 
-* Angular CLI
   ```sh
-  npm install -g @angular/cli
-  ```
-
-* Python
-  ```sh
-  version 3.8.3
+  version 3.9.3
   ```
 
 ### Installation
 
-_Below is an example of how you can install the current project requirements:_
 1. Clone the repo
+
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/Snippet-Management/Snippet-Backend.git
    ```
+
 2. Install pip
+
    ```sh
    python get-pip.py
    ```
-3. Install Django
-   ```sh
-   pip install django
-   ```
-   
-4. Install the requirements
+
+3. Install the requirements
+
    ```sh
    pip install -r requirements.txt
    ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+4. Run local django server
 
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Usage use cases.
-
-_For more examples, please refer to the [Documentation](https://doc.com)_
+   ```sh
+   python manage.py runserver
+   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
-- [x] Add Readme.md
 - [x] Define backend project structure
-- [x] Add SQLite
-- [x] Add django CRUDs
-- [ ] Add Angular structure
-- [ ] Define frontend project structure
-- [ ] Learn more Angular :)
-- [ ] Add Additional Templates 
+- [x] Add basic application CRUDs
+- [x] First deploy to Heroku
+- [ ] Implement search functionality
+- [ ] Write Django tests
+- [ ] Define CI/CD pipeline
+- [ ] Release 1.0.0
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -192,53 +142,32 @@ If you have a suggestion that would make this better, please fork the repo and c
 Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+2. Create your Feature Branch (`git checkout -b feature/amazing-feature`)
+3. Commit your Changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the Branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
-Project Link: [https://github.com/user/repo_name](https://github.com/user/repo_name)
+Project Link: [https://github.com/user/Snippet-Management](https://github.com/user/Snippet-Management)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/Adrian-2316/Snippet-Management.svg?style=for-the-badge
 [contributors-url]: https://github.com/Adrian-2316/Snippet-Management/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Adrian-2316/Snippet-Management.svg?style=for-the-badge
