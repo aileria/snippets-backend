@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
    path('admin/', admin.site.urls),
@@ -12,4 +14,4 @@ urlpatterns = [
    path('api/users/', include('users.urls')),
    path('api/snippets/', include('snippets.urls')),
    path('api/topics/', include('topics.urls')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
