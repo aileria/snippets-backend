@@ -1,0 +1,1 @@
+web: gunicorn snippet-management.wsgi --log-file -
