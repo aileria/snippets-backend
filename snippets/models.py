@@ -9,7 +9,7 @@ User = get_user_model()
 
 class Snippet(models.Model):
     name = models.CharField(max_length=100, blank=False)
-    description = models.CharField(max_length=255, default='')
+    description = models.CharField(max_length=25000, default='')
     user = models.ForeignKey(
         User,
         on_delete=CASCADE,
