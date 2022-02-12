@@ -19,6 +19,9 @@ class Snippet(models.Model):
     topics = models.ManyToManyField(
         Topic, related_name='snippets')
 
+    class Meta:
+        ordering = ['-id']
+
 
 class SnippetFile(models.Model):
     name = models.CharField(max_length=100, blank=False)
@@ -29,3 +32,6 @@ class SnippetFile(models.Model):
         related_name='files',
         related_query_name='file'
     )
+
+    class Meta:
+        ordering = ['-id']

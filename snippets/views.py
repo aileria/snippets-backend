@@ -1,7 +1,8 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import permissions
+from rest_framework import permissions, filters, mixins
+from rest_framework.viewsets import GenericViewSet
 from shared.views import BaseModelViewSet
-from .serializers import FullSnippetSerializer, FullSnippetWriteSerializer, SnippetFileSerializer, SnippetSerializer
+from .serializers import SnippetWriteSerializer, SnippetFileSerializer, BaseSnippetSerializer, SnippetSerializer
 from .models import Snippet, SnippetFile
 
 
@@ -14,15 +15,16 @@ from .models import Snippet, SnippetFile
     destroy=extend_schema(description='Delete snippet.'),
 )
 class SnippetViewSet(BaseModelViewSet):
-
     queryset = Snippet.objects.all()
+    search_fields = ['description', 'file__name', 'file__content', 'topics__name']
+    filter_backends = (filters.SearchFilter,)
 
     serializer_class = SnippetSerializer
     serializer_classes_by_action = {
-        'create': FullSnippetWriteSerializer,
-        'update': FullSnippetWriteSerializer,
-        'partial_update': FullSnippetWriteSerializer,
-        'retrieve': FullSnippetSerializer,
+        'create': SnippetWriteSerializer,
+        'update': SnippetWriteSerializer,
+        'partial_update': SnippetWriteSerializer,
+        'retrieve': SnippetSerializer,
     }
 
     permission_classes_by_action = {
@@ -34,6 +36,19 @@ class SnippetViewSet(BaseModelViewSet):
 
 
 @extend_schema_view(
+    list=extend_schema(description='Get paginated list of snippets previews.'),
+    retrieve=extend_schema(description='Get snippet preview.'),
+)
+class SnippetPreviewViewSet(mixins.RetrieveModelMixin,
+                            mixins.ListModelMixin,
+                            GenericViewSet):
+    queryset = Snippet.objects.all()
+    search_fields = ['description', 'file__name', 'file__content', 'topics__name']
+    filter_backends = (filters.SearchFilter,)
+    serializer_class = BaseSnippetSerializer
+
+
+@extend_schema_view(
     list=extend_schema(description='Get paginated list of snippet files.'),
     retrieve=extend_schema(description='Get snippet file.'),
     create=extend_schema(description='Create snippet file.'),
@@ -42,7 +57,6 @@ class SnippetViewSet(BaseModelViewSet):
     destroy=extend_schema(description='Delete snippet file.'),
 )
 class SnippetFileViewSet(BaseModelViewSet):
-
     queryset = SnippetFile.objects.all()
     serializer_class = SnippetFileSerializer
 

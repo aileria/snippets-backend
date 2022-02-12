@@ -4,7 +4,7 @@ from topics.serializers import TopicSerializer
 from .models import Snippet, SnippetFile
 
 
-class SnippetSerializer(serializers.ModelSerializer):
+class BaseSnippetSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True, read_only=True)
 
     class Meta:
@@ -23,24 +23,24 @@ class SnippetFileSerializer(serializers.ModelSerializer):
                   'content')
 
 
-class FullSnippetSerializer(SnippetSerializer):
+class SnippetSerializer(BaseSnippetSerializer):
     files = SnippetFileSerializer(many=True)
 
     class Meta:
         model = Snippet
-        fields = SnippetSerializer.Meta.fields + ('files',)
+        fields = BaseSnippetSerializer.Meta.fields + ('files',)
 
 
-class FullSnippetWriteSerializer(FullSnippetSerializer):
+class SnippetWriteSerializer(SnippetSerializer):
     topic_ids = serializers.PrimaryKeyRelatedField(
         queryset=Topic.objects.all(), many=True, write_only=True)
 
     class Meta:
         model = Snippet
-        fields = FullSnippetSerializer.Meta.fields + ('topic_ids',)
+        fields = SnippetSerializer.Meta.fields + ('topic_ids',)
 
     def to_representation(self, instance):
-        representation = super(FullSnippetWriteSerializer,
+        representation = super(SnippetWriteSerializer,
                                self).to_representation(instance)
         representation['topics'] = TopicSerializer(
             instance.topics.all(), many=True).data
