@@ -7,26 +7,29 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
 ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=darkgreen)
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
-![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white)
-
-<!--https://github.com/Ileriayo/markdown-badges-->
+![RxJS](https://img.shields.io/badge/rxjs-%23B7178C.svg?style=for-the-badge&logo=reactivex&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="logo">
+  <a href="https://snippet-management-app.herokuapp.com/">
     <img src="images/logo.png" alt="Logo" width="180" height="180">
   </a>
 
-  <h3 align="center">Snip</h3>
+  <h3 align="center">Snippets</h3>
 
   <p align="center">
     A modern snippet management web application
@@ -34,6 +37,8 @@
     <a href="https://snippet-management.herokuapp.com/api/schema/swagger-ui"><strong>Explore the API (hosted by Heroku) »</strong></a>
     <br />
     <br />
+    <a href="https://snippet-management-app.herokuapp.com/">Active website</a>
+    ·
     <a href="https://github.com/Snippet-Management/Snippet-Backend/labels/bug">Report Bug</a>
     ·
     <a href="https://github.com/Snippet-Management/Snippet-Backend/labels/enhancement">Request Feature</a>
@@ -58,27 +63,44 @@
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#built-with">Built With</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
+<!-- ABOUT THE PROJECT -->
 ## About The Project
+
+Snippets is an open source application, aiming to provide optimized and reusable code for the users.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 ### Built With
+
+Backend:
 
 - [Python](https://www.python.org/)
 - [Django](https://www.djangoproject.com/)
 - [Django REST framework](https://www.django-rest-framework.org/)
 - [Swagger](https://swagger.io/)
 - [Heroku](https://www.heroku.com/)
+- [Postgres](https://www.postgresql.org/)
+- [SQLite](https://www.sqlite.org/index.html)
+
+Frontend:
+
+- [Angular](https://angular.io/)
+- [Npm](https://www.npmjs.com/)
+- [Node](https://nodejs.org/en/)
+- [Rxjs](https://rxjs.dev/)
+- [Tailwind](https://tailwindcss.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
-## Getting Started
+## Getting Started (Backend)
 
 To get a local copy up and running follow these simple steps.
 
@@ -92,25 +114,25 @@ To get a local copy up and running follow these simple steps.
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repository:
 
    ```sh
    git clone https://github.com/Snippet-Management/Snippet-Backend.git
    ```
 
-2. Install pip
+2. Install pip:
 
    ```sh
    python get-pip.py
    ```
 
-3. Install the requirements
+3. Install the requirements:
 
    ```sh
    pip install -r requirements.txt
    ```
 
-4. Run local django server
+4. Run local django server:
 
    ```sh
    python manage.py runserver
@@ -124,7 +146,7 @@ To get a local copy up and running follow these simple steps.
 
 - [x] Define backend project structure
 - [x] Add basic application CRUDs
-- [x] First deploy to Heroku
+- [x] Initial deploy in Heroku
 - [ ] Implement search functionality
 - [ ] Write Django tests
 - [ ] Define CI/CD pipeline
@@ -161,7 +183,12 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Project Link: [https://github.com/user/Snippet-Management](https://github.com/user/Snippet-Management)
+Organization Link: 
+- [Snippet Management](https://github.com/Snippet-Management)
+
+LinkedIn:
+- [Aitor Lería](https://es.linkedin.com/in/aitorleria)
+- [Adrián Moral](https://es.linkedin.com/in/adri%C3%A1n-moral-bail%C3%B3n-b51107210)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -179,5 +206,4 @@ Project Link: [https://github.com/user/Snippet-Management](https://github.com/us
 [license-shield]: https://img.shields.io/github/license/Adrian-2316/Snippet-Management.svg?style=for-the-badge
 [license-url]: https://github.com/Adrian-2316/Snippet-Management/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/sample
-[product-screenshot]: images/logo.png
+
