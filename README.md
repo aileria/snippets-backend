@@ -34,7 +34,7 @@
   <p align="center">
     A modern snippet management web application
     <br />
-    <a href="https://snippet-management.herokuapp.com/api/schema/swagger-ui"><strong>Explore the API (hosted by Heroku) »</strong></a>
+    <a href="https://snippets-backend-prod.herokuapp.com/api/schema/swagger-ui"><strong>Explore the API (hosted by Heroku) »</strong></a>
     <br />
     <br />
     <a href="https://snippet-management-app.herokuapp.com/">Active website</a>
