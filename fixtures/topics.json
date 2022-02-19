@@ -121,7 +121,7 @@
     "pk": 14,
     "fields": {
         "name": "GitHub",
-        "color": "#174E9C",
+        "color": "#4471b1",
         "icon": "static/topics/github.png"
     }
 },
@@ -202,7 +202,7 @@
     "pk": 23,
     "fields": {
         "name": "MongoDB",
-        "color": "#492626",
+        "color": "#1b621b",
         "icon": "static/topics/mongodb.png"
     }
 },
@@ -321,6 +321,15 @@
         "name": "Vue.js",
         "color": "#848B5D",
         "icon": "static/topics/vue-js.png"
+    }
+},
+{
+    "model": "topics.topic",
+    "pk": 37,
+    "fields": {
+        "name": "Solidity",
+        "color": "#5c5c5c",
+        "icon": "static/topics/solidity.png"
     }
 }
 ]
