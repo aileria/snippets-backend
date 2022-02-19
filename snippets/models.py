@@ -35,3 +35,31 @@ class SnippetFile(models.Model):
 
     class Meta:
         ordering = ['-id']
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=CASCADE,
+        related_name='comments',
+        related_query_name='comment'
+    )
+    snippet = models.ForeignKey(
+        Snippet,
+        on_delete=CASCADE,
+        related_name='comments',
+        related_query_name='comment'
+    )
+    parent = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        related_name='replies',
+        on_delete=CASCADE
+    )
+    active = models.BooleanField(default=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    content = models.TextField(max_length=25000, blank=False)
+
+    class Meta:
+        ordering = ['created_date']

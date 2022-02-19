@@ -1,7 +1,9 @@
 from rest_framework import serializers
+from shared.serializers import RecursiveField
 from topics.models import Topic
 from topics.serializers import TopicSerializer
-from .models import Snippet, SnippetFile
+from users.serializers import UserSerializer
+from .models import Snippet, SnippetFile, Comment
 
 
 class BaseSnippetSerializer(serializers.ModelSerializer):
@@ -21,6 +23,25 @@ class SnippetFileSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'name',
                   'content')
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    replies = RecursiveField(many=True)
+
+    class Meta:
+        model = Comment
+        fields = ('id',
+                  'user',
+                  'created_date',
+                  'content',
+                  'replies')
+
+
+class CommentWriteSerializer(CommentSerializer):
+    class Meta:
+        model = Comment
+        fields = ('parent', 'content')
 
 
 class SnippetSerializer(BaseSnippetSerializer):

@@ -1,9 +1,11 @@
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 from rest_framework import permissions, filters, mixins
 from rest_framework.viewsets import GenericViewSet
 from shared.views import BaseModelViewSet
-from .serializers import SnippetWriteSerializer, SnippetFileSerializer, BaseSnippetSerializer, SnippetSerializer
-from .models import Snippet, SnippetFile
+from .serializers import SnippetWriteSerializer, SnippetFileSerializer, BaseSnippetSerializer, SnippetSerializer, \
+    CommentSerializer, CommentWriteSerializer
+from .models import Snippet, SnippetFile, Comment
 
 
 class TopicsFilterBackend(filters.BaseFilterBackend):
@@ -91,3 +93,34 @@ class SnippetFileViewSet(BaseModelViewSet):
         'partial_update': (permissions.IsAuthenticated,),
         'destroy': (permissions.IsAuthenticated,),
     }
+
+
+@extend_schema_view(
+    list=extend_schema(description='Get list of snippet\'s comments.'),
+    create=extend_schema(description='Create snippet\'s comment.'),
+    destroy=extend_schema(description='Delete snippet\'s comment.'),
+)
+class SnippetCommentViewSet(mixins.CreateModelMixin,
+                            mixins.ListModelMixin,
+                            mixins.DestroyModelMixin,
+                            GenericViewSet):
+
+    permission_classes_by_action = {
+        'create': (permissions.IsAuthenticated,),
+        'destroy': (permissions.IsAdminUser,),
+    }
+
+    serializer_class = CommentSerializer
+    serializer_classes_by_action = {
+        'create': CommentWriteSerializer,
+    }
+
+    def get_queryset(self):
+        snippet_id = self.kwargs['snippet_id']
+        get_object_or_404(Snippet, id=snippet_id)
+        return Comment.objects.filter(snippet__id=snippet_id, active=True)
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        snippet_id = self.kwargs['snippet_id']
+        serializer.save(user=user, snippet_id=snippet_id)
