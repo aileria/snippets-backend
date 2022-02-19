@@ -2,8 +2,7 @@ import json
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.test import APITestCase
-
-from snippets.models import Snippet, SnippetFile
+from snippets.models import Snippet, File
 from snippets.serializers import SnippetSerializer
 from topics.models import Topic
 
@@ -104,9 +103,9 @@ class SnippetDetailTestCase(AuthAPITestCase):
         self.snippet.topics.set([Topic.objects.create(id=0, name='JS'),
                                  Topic.objects.create(id=1, name='TEST')])
         self.snippet.files.set([
-            SnippetFile.objects.create(snippet=self.snippet, name='test_file1.py', content='console.log("test1")'),
-            SnippetFile.objects.create(snippet=self.snippet, name='test_file2.py', content='console.log("test2")'),
-            SnippetFile.objects.create(snippet=self.snippet, name='test_file3.py', content='console.log("test3")'),
+            File.objects.create(snippet=self.snippet, name='test_file1.py', content='console.log("test1")'),
+            File.objects.create(snippet=self.snippet, name='test_file2.py', content='console.log("test2")'),
+            File.objects.create(snippet=self.snippet, name='test_file3.py', content='console.log("test3")'),
         ])
         self.snippet.save()
 

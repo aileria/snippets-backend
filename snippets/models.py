@@ -23,7 +23,7 @@ class Snippet(models.Model):
         ordering = ['-id']
 
 
-class SnippetFile(models.Model):
+class File(models.Model):
     name = models.CharField(max_length=100, blank=False)
     content = models.TextField(max_length=25000, blank=False)
     snippet = models.ForeignKey(

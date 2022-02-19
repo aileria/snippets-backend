@@ -2,19 +2,11 @@ from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 from rest_framework import permissions, filters, mixins
 from rest_framework.viewsets import GenericViewSet
+from shared.filter_backends import TopicsFilterBackend
 from shared.views import BaseModelViewSet
-from .serializers import SnippetWriteSerializer, SnippetFileSerializer, BaseSnippetSerializer, SnippetSerializer, \
-    CommentSerializer, CommentWriteSerializer
-from .models import Snippet, SnippetFile, Comment
-
-
-class TopicsFilterBackend(filters.BaseFilterBackend):
-    def filter_queryset(self, request, queryset, view):
-        id_list = request.query_params.get('topics')
-        if not id_list:
-            return queryset
-        id_list = list(map(int, id_list.split(',')))
-        return queryset.filter(topics__id__in=id_list)
+from .serializers import SnippetWriteSerializer, FileSerializer, BaseSnippetSerializer, SnippetSerializer, \
+    CommentSerializer, CommentWriteSerializer, SnippetCreateSerializer
+from .models import Snippet, File, Comment
 
 
 @extend_schema_view(
@@ -40,10 +32,9 @@ class SnippetViewSet(BaseModelViewSet):
 
     serializer_class = SnippetSerializer
     serializer_classes_by_action = {
-        'create': SnippetWriteSerializer,
+        'create': SnippetCreateSerializer,
         'update': SnippetWriteSerializer,
         'partial_update': SnippetWriteSerializer,
-        'retrieve': SnippetSerializer,
     }
 
     permission_classes_by_action = {
@@ -76,16 +67,15 @@ class SnippetPreviewViewSet(mixins.RetrieveModelMixin,
 
 
 @extend_schema_view(
-    list=extend_schema(description='Get paginated list of snippet files.'),
-    retrieve=extend_schema(description='Get snippet file.'),
-    create=extend_schema(description='Create snippet file.'),
-    update=extend_schema(description='Update snippet file.'),
-    partial_update=extend_schema(description='Partially update snippet file.'),
-    destroy=extend_schema(description='Delete snippet file.'),
+    list=extend_schema(description='Get paginated list of snippet\'s files.'),
+    retrieve=extend_schema(description='Get snippet\'s file.'),
+    create=extend_schema(description='Create snippet\'s file.'),
+    update=extend_schema(description='Update snippet\'s file.'),
+    partial_update=extend_schema(description='Partially update snippet\'s file.'),
+    destroy=extend_schema(description='Delete snippet\'s file.'),
 )
-class SnippetFileViewSet(BaseModelViewSet):
-    queryset = SnippetFile.objects.all()
-    serializer_class = SnippetFileSerializer
+class FileViewSet(BaseModelViewSet):
+    serializer_class = FileSerializer
 
     permission_classes_by_action = {
         'create': (permissions.IsAuthenticated,),
@@ -94,17 +84,37 @@ class SnippetFileViewSet(BaseModelViewSet):
         'destroy': (permissions.IsAuthenticated,),
     }
 
+    def get_queryset(self):
+        snippet_id = self.kwargs['snippet_id']
+        get_object_or_404(Snippet, id=snippet_id)
+        return File.objects.filter(snippet__id=snippet_id)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['snippet_id'] = self.kwargs['snippet_id']
+        context['user'] = self.request.user
+        return context
+
+    def perform_create(self, serializer):
+        snippet_id = self.kwargs['snippet_id']
+        get_object_or_404(Snippet, id=snippet_id)
+        serializer.save(snippet_id=snippet_id)
+
+    def perform_update(self, serializer):
+        snippet_id = self.kwargs['snippet_id']
+        get_object_or_404(Snippet, id=snippet_id)
+        serializer.save()
+
 
 @extend_schema_view(
     list=extend_schema(description='Get list of snippet\'s comments.'),
     create=extend_schema(description='Create snippet\'s comment.'),
     destroy=extend_schema(description='Delete snippet\'s comment.'),
 )
-class SnippetCommentViewSet(mixins.CreateModelMixin,
-                            mixins.ListModelMixin,
-                            mixins.DestroyModelMixin,
-                            GenericViewSet):
-
+class CommentViewSet(mixins.CreateModelMixin,
+                     mixins.ListModelMixin,
+                     mixins.DestroyModelMixin,
+                     GenericViewSet):
     permission_classes_by_action = {
         'create': (permissions.IsAuthenticated,),
         'destroy': (permissions.IsAdminUser,),
