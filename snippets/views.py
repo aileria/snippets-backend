@@ -3,6 +3,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiPara
 from rest_framework import permissions, filters, mixins
 from rest_framework.viewsets import GenericViewSet
 from shared.filter_backends import TopicsFilterBackend
+from shared.mixins import DynamicSerializersMixin, DynamicPermissionsMixin
 from shared.views import BaseModelViewSet
 from .serializers import SnippetWriteSerializer, FileSerializer, BaseSnippetSerializer, SnippetSerializer, \
     CommentSerializer, CommentWriteSerializer, SnippetCreateSerializer
@@ -114,6 +115,8 @@ class FileViewSet(BaseModelViewSet):
 class CommentViewSet(mixins.CreateModelMixin,
                      mixins.ListModelMixin,
                      mixins.DestroyModelMixin,
+                     DynamicSerializersMixin,
+                     DynamicPermissionsMixin,
                      GenericViewSet):
     permission_classes_by_action = {
         'create': (permissions.IsAuthenticated,),
@@ -122,6 +125,7 @@ class CommentViewSet(mixins.CreateModelMixin,
 
     serializer_class = CommentSerializer
     serializer_classes_by_action = {
+        'list': CommentSerializer,
         'create': CommentWriteSerializer,
     }
 
