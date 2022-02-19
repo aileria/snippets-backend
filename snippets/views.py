@@ -4,6 +4,7 @@ from rest_framework import permissions, filters, mixins
 from rest_framework.viewsets import GenericViewSet
 from shared.filter_backends import TopicsFilterBackend
 from shared.mixins import DynamicSerializersMixin, DynamicPermissionsMixin
+from shared.permissions import IsOwner
 from shared.views import BaseModelViewSet
 from .serializers import SnippetWriteSerializer, FileSerializer, BaseSnippetSerializer, SnippetSerializer, \
     CommentSerializer, CommentWriteSerializer, SnippetCreateSerializer
@@ -40,9 +41,9 @@ class SnippetViewSet(BaseModelViewSet):
 
     permission_classes_by_action = {
         'create': (permissions.IsAuthenticated,),
-        'update': (permissions.IsAuthenticated,),
-        'partial_update': (permissions.IsAuthenticated,),
-        'destroy': (permissions.IsAuthenticated,),
+        'update': (permissions.IsAdminUser | IsOwner,),
+        'partial_update': (permissions.IsAdminUser | IsOwner,),
+        'destroy': (permissions.IsAdminUser | IsOwner,),
     }
 
 
@@ -79,10 +80,10 @@ class FileViewSet(BaseModelViewSet):
     serializer_class = FileSerializer
 
     permission_classes_by_action = {
-        'create': (permissions.IsAuthenticated,),
-        'update': (permissions.IsAuthenticated,),
-        'partial_update': (permissions.IsAuthenticated,),
-        'destroy': (permissions.IsAuthenticated,),
+        'create': (permissions.IsAdminUser | IsOwner,),
+        'update': (permissions.IsAdminUser | IsOwner,),
+        'partial_update': (permissions.IsAdminUser | IsOwner,),
+        'destroy': (permissions.IsAdminUser | IsOwner,),
     }
 
     def get_queryset(self):
@@ -120,7 +121,7 @@ class CommentViewSet(mixins.CreateModelMixin,
                      GenericViewSet):
     permission_classes_by_action = {
         'create': (permissions.IsAuthenticated,),
-        'destroy': (permissions.IsAdminUser,),
+        'destroy': (permissions.IsAdminUser | IsOwner,),
     }
 
     serializer_class = CommentSerializer
