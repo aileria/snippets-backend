@@ -14,6 +14,7 @@ whitenoise = "*"
 djangorestframework-simplejwt = "*"
 drf-spectacular = "*"
 python-decouple = "*"
+pillow = "*"
 
 [dev-packages]
 
