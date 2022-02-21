@@ -1,8 +1,48 @@
 from rest_framework import serializers
+from shared.serializers import RecursiveField
 from topics.models import Topic
 from topics.serializers import TopicSerializer
-from .models import Snippet, SnippetFile
+from users.serializers import UserSerializer
+from .models import Snippet, File, Comment
 
+
+# FILE
+
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = ('id',
+                  'name',
+                  'content')
+
+
+# COMMENT
+
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    replies = RecursiveField(many=True)
+
+    class Meta:
+        model = Comment
+        fields = ('id',
+                  'user',
+                  'created_date',
+                  'content',
+                  'replies')
+
+
+class CommentWriteSerializer(CommentSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'parent', 'content')
+
+    def validate_parent(self, value):
+        if value.parent is not None:
+            raise serializers.ValidationError('Nested replies are not allowed')
+        return value
+
+
+# SNIPPET
 
 class BaseSnippetSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True, read_only=True)
@@ -15,29 +55,21 @@ class BaseSnippetSerializer(serializers.ModelSerializer):
                   'topics')
 
 
-class SnippetFileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SnippetFile
-        fields = ('id',
-                  'name',
-                  'content')
-
-
 class SnippetSerializer(BaseSnippetSerializer):
-    files = SnippetFileSerializer(many=True)
+    files = FileSerializer(many=True)
 
     class Meta:
         model = Snippet
         fields = BaseSnippetSerializer.Meta.fields + ('files',)
 
 
-class SnippetWriteSerializer(SnippetSerializer):
+class SnippetWriteSerializer(BaseSnippetSerializer):
     topic_ids = serializers.PrimaryKeyRelatedField(
         queryset=Topic.objects.all(), many=True, write_only=True)
 
     class Meta:
         model = Snippet
-        fields = SnippetSerializer.Meta.fields + ('topic_ids',)
+        fields = BaseSnippetSerializer.Meta.fields + ('topic_ids',)
 
     def to_representation(self, instance):
         representation = super(SnippetWriteSerializer,
@@ -45,6 +77,22 @@ class SnippetWriteSerializer(SnippetSerializer):
         representation['topics'] = TopicSerializer(
             instance.topics.all(), many=True).data
         return representation
+
+    def update(self, instance, validated_data):
+        topics = validated_data.pop('topic_ids')
+
+        for field in validated_data:
+            setattr(instance, field, validated_data.get(
+                field, getattr(instance, field)))
+        instance.save()
+        instance.topics.set(topics)
+        return instance
+
+
+class SnippetCreateSerializer(SnippetWriteSerializer, SnippetSerializer):
+    class Meta:
+        model = Snippet
+        fields = BaseSnippetSerializer.Meta.fields + ('files', 'topic_ids',)
 
     def create(self, validated_data):
         files_data = validated_data.pop('files')
@@ -55,24 +103,8 @@ class SnippetWriteSerializer(SnippetSerializer):
             user=current_user,
             **validated_data)
 
-        files = [SnippetFile(snippet=instance, **file) for file in files_data]
-        SnippetFile.objects.bulk_create(files)
-
-        instance.topics.set(topics)
-
-        return instance
-
-    def update(self, instance, validated_data):
-        files_data = validated_data.pop('files')
-        topics = validated_data.pop('topics')
-
-        for field in validated_data:
-            setattr(instance, field, validated_data.get(
-                field, getattr(instance, field)))
-        instance.save()
-
-        files = [SnippetFile(snippet=instance, **file) for file in files_data]
-        SnippetFile.objects.bulk_create(files)
+        files = [File(snippet=instance, **file) for file in files_data]
+        File.objects.bulk_create(files)
 
         instance.topics.set(topics)
 

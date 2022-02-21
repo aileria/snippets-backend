@@ -2,8 +2,7 @@ import json
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.test import APITestCase
-
-from snippets.models import Snippet, SnippetFile
+from snippets.models import Snippet, File, Comment
 from snippets.serializers import SnippetSerializer
 from topics.models import Topic
 
@@ -104,14 +103,14 @@ class SnippetDetailTestCase(AuthAPITestCase):
         self.snippet.topics.set([Topic.objects.create(id=0, name='JS'),
                                  Topic.objects.create(id=1, name='TEST')])
         self.snippet.files.set([
-            SnippetFile.objects.create(snippet=self.snippet, name='test_file1.py', content='console.log("test1")'),
-            SnippetFile.objects.create(snippet=self.snippet, name='test_file2.py', content='console.log("test2")'),
-            SnippetFile.objects.create(snippet=self.snippet, name='test_file3.py', content='console.log("test3")'),
+            File.objects.create(snippet=self.snippet, name='test_file1.py', content='console.log("test1")'),
+            File.objects.create(snippet=self.snippet, name='test_file2.py', content='console.log("test2")'),
+            File.objects.create(snippet=self.snippet, name='test_file3.py', content='console.log("test3")'),
         ])
         self.snippet.save()
 
     # TESTS
-    def test_todo_object_bundle(self):
+    def test_snippet_object_bundle(self):
         """
         Verify snippet object bundle
         """
@@ -121,3 +120,79 @@ class SnippetDetailTestCase(AuthAPITestCase):
         serializer_data = SnippetSerializer(instance=self.snippet).data
         response_data = json.loads(response.content)
         self.assertEqual(serializer_data, response_data)
+
+
+class SnippetCommentsTestCase(AuthAPITestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.mock_data()
+        self.url = reverse("snippets:snippet-comments-list", kwargs={"snippet_id": self.snippet.pk})
+
+    def mock_data(self):
+        self.snippet = Snippet.objects.create(user=self.user, name='Test Snippet',
+                                              description='Test snippet description')
+        self.snippet.comments.set([
+            Comment.objects.create(snippet=self.snippet, user=self.user, content='Test comment 1', id=1),
+            Comment.objects.create(snippet=self.snippet, user=self.user, content='Test reply 1', id=2, parent_id=1),
+            Comment.objects.create(snippet=self.snippet, user=self.user, content='Test reply 2', id=3, parent_id=1),
+        ])
+        self.snippet.save()
+
+        self.comment = {
+            'content': 'Test comment 4',
+        }
+
+    def test_create_snippet_comment(self):
+        """
+        Verify top level snippet comment creation
+        """
+
+        comment = self.comment
+        response = self.client.post(
+            self.url, comment,
+            format='json'
+        )
+        result = json.loads(response.content)
+
+        self.assertEqual(201, response.status_code)
+        self.assertEqual(comment['content'], result['content'])
+        self.assertEqual(None, result['parent'])
+
+    def test_create_snippet_comment_reply(self):
+        """
+        Verify snippet comment reply
+        """
+
+        # Test valid reply creation
+        comment = self.comment
+        comment['parent'] = 1
+        response = self.client.post(
+            self.url, comment,
+            format='json'
+        )
+        result = json.loads(response.content)
+        self.assertEqual(201, response.status_code)
+        self.assertEqual(comment['content'], result['content'])
+        self.assertEqual(comment['parent'], result['parent'])
+
+        # Test invalid reply creation (nested)
+        comment['parent'] = result['id']
+        response = self.client.post(
+            self.url, comment,
+            format='json'
+        )
+        self.assertEqual(400, response.status_code)
+
+    def test_snippet_comment_object_bundle(self):
+        """
+        Verify snippet comment object bundle
+        """
+
+        response = self.client.get(self.url, format='json')
+        result = json.loads(response.content)
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(result['count'], 1)
+        comment = result['results'][0]
+        self.assertEqual(len(comment['replies']), 2)

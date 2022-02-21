@@ -22,8 +22,8 @@ class TopicViewSet(BaseModelViewSet):
     serializer_class = TopicSerializer
 
     permission_classes_by_action = {
-        'create': (permissions.IsAuthenticated,),
-        'update': (permissions.IsAuthenticated,),
-        'partial_update': (permissions.IsAuthenticated,),
-        'destroy': (permissions.IsAuthenticated,),
+        'create': (permissions.IsAdminUser,),
+        'update': (permissions.IsAdminUser,),
+        'partial_update': (permissions.IsAdminUser,),
+        'destroy': (permissions.IsAdminUser,),
     }
