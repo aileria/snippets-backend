@@ -7,6 +7,7 @@
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+db.sqlite3.*
 
 # Flask stuff:
 instance/
@@ -25,3 +26,6 @@ __pycache__/
 
 *.todo
 *.txt
+
+secret/
+.idea/
