@@ -78,6 +78,7 @@ class SnippetPreviewViewSet(mixins.RetrieveModelMixin,
 )
 class FileViewSet(BaseModelViewSet):
     serializer_class = FileSerializer
+    pagination_class = None
 
     permission_classes_by_action = {
         'create': (permissions.IsAdminUser | IsOwner,),
@@ -133,7 +134,7 @@ class CommentViewSet(mixins.CreateModelMixin,
     def get_queryset(self):
         snippet_id = self.kwargs['snippet_id']
         get_object_or_404(Snippet, id=snippet_id)
-        return Comment.objects.filter(snippet__id=snippet_id, active=True)
+        return Comment.objects.filter(snippet__id=snippet_id, active=True, parent=None)
 
     def perform_create(self, serializer):
         user = self.request.user

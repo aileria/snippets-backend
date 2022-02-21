@@ -34,7 +34,12 @@ class CommentSerializer(serializers.ModelSerializer):
 class CommentWriteSerializer(CommentSerializer):
     class Meta:
         model = Comment
-        fields = ('parent', 'content')
+        fields = ('id', 'parent', 'content')
+
+    def validate_parent(self, value):
+        if value.parent is not None:
+            raise serializers.ValidationError('Nested replies are not allowed')
+        return value
 
 
 # SNIPPET
