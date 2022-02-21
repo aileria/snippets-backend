@@ -15,6 +15,8 @@ djangorestframework-simplejwt = "*"
 drf-spectacular = "*"
 python-decouple = "*"
 pillow = "*"
+django-rest-auth = "*"
+django-allauth = "*"
 
 [dev-packages]
 
