@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+Django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
 gunicorn = "*"
@@ -14,9 +14,10 @@ whitenoise = "*"
 djangorestframework-simplejwt = "*"
 drf-spectacular = "*"
 python-decouple = "*"
-pillow = "*"
-django-rest-auth = "*"
+Pillow = "*"
 django-allauth = "*"
+dj-rest-auth = "*"
+pyjwt = "*"
 
 [dev-packages]
 
