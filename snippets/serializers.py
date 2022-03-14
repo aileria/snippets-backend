@@ -1,4 +1,7 @@
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
+
+from shared.models import Vote
 from shared.serializers import RecursiveField
 from topics.models import Topic
 from topics.serializers import TopicSerializer
@@ -52,7 +55,29 @@ class BaseSnippetSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'name',
                   'description',
-                  'topics')
+                  'topics',
+                  'upvotes',
+                  'downvotes')
+        read_only_fields = ('upvotes', 'downvotes')
+
+    def to_representation(self, instance):
+        representation = super(BaseSnippetSerializer, self).to_representation(instance)
+        user = self.context['request'].user
+
+        # If request user is authenticated include userVote field
+        if user.is_authenticated:
+            try:
+                vote = Vote.objects.get(
+                    user=user,
+                    content_type=ContentType.objects.get(model='snippet'),
+                    object_id=instance.id
+                )
+                representation['userVote'] = vote.score
+
+            except Vote.DoesNotExist:
+                representation['userVote'] = 0
+
+        return representation
 
 
 class SnippetSerializer(BaseSnippetSerializer):
@@ -61,6 +86,7 @@ class SnippetSerializer(BaseSnippetSerializer):
     class Meta:
         model = Snippet
         fields = BaseSnippetSerializer.Meta.fields + ('files',)
+        read_only_fields = BaseSnippetSerializer.Meta.read_only_fields
 
 
 class SnippetWriteSerializer(BaseSnippetSerializer):
@@ -70,6 +96,7 @@ class SnippetWriteSerializer(BaseSnippetSerializer):
     class Meta:
         model = Snippet
         fields = BaseSnippetSerializer.Meta.fields + ('topic_ids',)
+        read_only_fields = BaseSnippetSerializer.Meta.read_only_fields
 
     def to_representation(self, instance):
         representation = super(SnippetWriteSerializer,
@@ -93,6 +120,7 @@ class SnippetCreateSerializer(SnippetWriteSerializer, SnippetSerializer):
     class Meta:
         model = Snippet
         fields = BaseSnippetSerializer.Meta.fields + ('files', 'topic_ids',)
+        read_only_fields = BaseSnippetSerializer.Meta.read_only_fields
 
     def create(self, validated_data):
         files_data = validated_data.pop('files')
