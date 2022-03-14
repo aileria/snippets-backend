@@ -92,18 +92,12 @@ class SnippetSerializer(BaseSnippetSerializer):
 class SnippetWriteSerializer(BaseSnippetSerializer):
     topic_ids = serializers.PrimaryKeyRelatedField(
         queryset=Topic.objects.all(), many=True, write_only=True)
+    topics = TopicSerializer(many=True, read_only=True)
 
     class Meta:
         model = Snippet
         fields = BaseSnippetSerializer.Meta.fields + ('topic_ids',)
         read_only_fields = BaseSnippetSerializer.Meta.read_only_fields
-
-    def to_representation(self, instance):
-        representation = super(SnippetWriteSerializer,
-                               self).to_representation(instance)
-        representation['topics'] = TopicSerializer(
-            instance.topics.all(), many=True).data
-        return representation
 
     def update(self, instance, validated_data):
         topics = validated_data.pop('topic_ids')
