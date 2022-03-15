@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 from rest_framework import permissions, filters, mixins
+from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.response import Response
 from shared.filter_backends import TopicsFilterBackend
 from shared.mixins import DynamicSerializersMixin, DynamicPermissionsMixin
 from shared.permissions import IsOwner
@@ -44,7 +46,33 @@ class SnippetViewSet(BaseModelViewSet):
         'update': (permissions.IsAdminUser | IsOwner,),
         'partial_update': (permissions.IsAdminUser | IsOwner,),
         'destroy': (permissions.IsAdminUser | IsOwner,),
+        'upvote_snippet': (permissions.IsAuthenticated,),
+        'downvote_snippet': (permissions.IsAuthenticated,),
     }
+
+    @action(methods=["get"], detail=True, url_path='upvote', url_name="upvote")
+    def upvote_snippet(self, request, pk):
+        """
+        Upvote a snippet. If the snippet is already upvoted by the authenticated user
+        the initial upvote will be reverted.
+        """
+
+        snippet = get_object_or_404(Snippet, id=pk)
+        snippet.upvote(request.user)
+        serializer = self.get_serializer(snippet)
+        return Response(serializer.data)
+
+    @action(methods=["get"], detail=True, url_path='downvote', url_name="downvote")
+    def downvote_snippet(self, request, pk):
+        """
+        Downvote a snippet. If the snippet is already downvoted by the authenticated user
+        the initial downvote will be reverted.
+        """
+
+        snippet = get_object_or_404(Snippet, id=pk)
+        snippet.downvote(request.user)
+        serializer = self.get_serializer(snippet)
+        return Response(serializer.data)
 
 
 @extend_schema_view(

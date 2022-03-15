@@ -2,12 +2,13 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.contrib.auth import get_user_model
 
+from shared.models import VoteMixin
 from topics.models import Topic
 
 User = get_user_model()
 
 
-class Snippet(models.Model):
+class Snippet(VoteMixin, models.Model):
     name = models.CharField(max_length=100, blank=False)
     description = models.CharField(max_length=25000, default='')
     user = models.ForeignKey(
