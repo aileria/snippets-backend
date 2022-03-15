@@ -24,7 +24,6 @@ class UserViewSet(DynamicSerializersMixin,
                   mixins.UpdateModelMixin,
                   mixins.DestroyModelMixin,
                   GenericViewSet):
-
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -33,6 +32,7 @@ class UserViewSet(DynamicSerializersMixin,
         'partial_update': (permissions.IsAdminUser | IsOwner,),
         'destroy': (permissions.IsAdminUser | IsOwner,),
         'get_current_user': (permissions.IsAuthenticated,),
+        'get_current_user_snippets': (permissions.IsAuthenticated,),
     }
 
     serializer_classes_by_action = {
@@ -40,6 +40,7 @@ class UserViewSet(DynamicSerializersMixin,
         'partial_update': UpdateUserSerializer,
         'get_current_user': FullUserSerializer,
         'get_user_snippets': SnippetSerializer,
+        'get_current_user_snippets': SnippetSerializer,
     }
 
     @action(methods=["get"], detail=False, url_path='(?P<username>[^/.]+)', url_name="user")
@@ -62,6 +63,20 @@ class UserViewSet(DynamicSerializersMixin,
         """Get snippets created by the specified user."""
 
         user_snippets = Snippet.objects.all().filter(user__username=username).order_by('-id')
+
+        page = self.paginate_queryset(user_snippets)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(user_snippets, many=True)
+        return Response(serializer.data)
+
+    @action(methods=["get"], detail=False, url_path='me/snippets', url_name="my-snippets")
+    def get_current_user_snippets(self, request):
+        """Get snippets created by currently logged user."""
+
+        user_snippets = Snippet.objects.all().filter(user=request.user).order_by('-id')
 
         page = self.paginate_queryset(user_snippets)
         if page is not None:
