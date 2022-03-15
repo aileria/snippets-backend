@@ -1,5 +1,5 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import permissions
+from rest_framework import permissions, filters
 from shared.views import BaseModelViewSet
 from .serializers import TopicSerializer
 from .models import Topic
@@ -16,11 +16,14 @@ from .models import Topic
 class TopicViewSet(BaseModelViewSet):
 
     queryset = Topic.objects.all()
+    search_fields = ['name']
+    filter_backends = (filters.SearchFilter,)
+
     serializer_class = TopicSerializer
 
     permission_classes_by_action = {
-        'create': (permissions.IsAuthenticated,),
-        'update': (permissions.IsAuthenticated,),
-        'partial_update': (permissions.IsAuthenticated,),
-        'destroy': (permissions.IsAuthenticated,),
+        'create': (permissions.IsAdminUser,),
+        'update': (permissions.IsAdminUser,),
+        'partial_update': (permissions.IsAdminUser,),
+        'destroy': (permissions.IsAdminUser,),
     }

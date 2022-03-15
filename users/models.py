@@ -4,3 +4,6 @@ from django.db import models
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, blank=False)
+
+    class Meta:
+        ordering = ['-id']
