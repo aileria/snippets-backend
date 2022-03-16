@@ -81,6 +81,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'scope': ('user:email',)
     },
 }
+SOCIAL_LOGIN_CALLBACK_URL = config('SOCIAL_LOGIN_CALLBACK_URL', default='http://localhost:4200')
 
 # dj-rest-auth
 ACCOUNT_LOGOUT_ON_GET = False

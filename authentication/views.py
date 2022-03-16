@@ -4,6 +4,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.permissions import AllowAny
 from .serializers import RegisterSerializer
 from rest_framework import generics
+from django.conf import settings
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
@@ -28,6 +29,7 @@ class GoogleLogin(SocialLoginView):
     """
 
     adapter_class = GoogleOAuth2Adapter
+    callback_url = getattr(settings, 'SOCIAL_LOGIN_CALLBACK_URL', 'http://localhost:4200') + '?from=google'
     client_class = OAuth2Client
 
 
@@ -37,4 +39,5 @@ class GithubLogin(SocialLoginView):
     """
 
     adapter_class = GitHubOAuth2Adapter
+    callback_url = getattr(settings, 'SOCIAL_LOGIN_CALLBACK_URL', 'http://localhost:4200') + '?from=github'
     client_class = OAuth2Client
