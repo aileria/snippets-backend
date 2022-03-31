@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.response import Response
 
 
 class DynamicSerializersMixin:
@@ -46,3 +47,18 @@ class DynamicPermissionsMixin:
                 permission_classes = None
 
             return [permission() for permission in (permission_classes or self.permission_classes)]
+
+
+class PaginationMixin:
+    """
+    Adds generic pagination functionality.
+    """
+
+    def paginated_response(self, queryset):
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

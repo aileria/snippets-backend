@@ -3,13 +3,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import GenericViewSet
-from shared.mixins import DynamicPermissionsMixin, DynamicSerializersMixin
+from shared.mixins import DynamicPermissionsMixin, DynamicSerializersMixin, PaginationMixin
 from shared.permissions import IsOwner
 from .serializers import FullUserSerializer, UpdateUserSerializer, UserSerializer
 from .models import User
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
 
 @extend_schema_view(
@@ -17,9 +17,28 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
     update=extend_schema(description='Update user data.'),
     partial_update=extend_schema(description='Partially update user data.'),
     destroy=extend_schema(description='Delete a user.'),
+    get_user_snippets=extend_schema(
+        description='Get paginated list of the specified user\'s snippets.',
+        parameters=[
+            OpenApiParameter(
+                name='page',
+                type=str,
+                location=OpenApiParameter.QUERY,
+                required=False,
+            )]),
+    get_current_user_snippets=extend_schema(
+        description='Get paginated list of the currently logged user\'s snippets.',
+        parameters=[
+            OpenApiParameter(
+                name='page',
+                type=str,
+                location=OpenApiParameter.QUERY,
+                required=False,
+            )])
 )
 class UserViewSet(DynamicSerializersMixin,
                   DynamicPermissionsMixin,
+                  PaginationMixin,
                   mixins.ListModelMixin,
                   mixins.UpdateModelMixin,
                   mixins.DestroyModelMixin,
@@ -63,25 +82,11 @@ class UserViewSet(DynamicSerializersMixin,
         """Get snippets created by the specified user."""
 
         user_snippets = Snippet.objects.all().filter(user__username=username).order_by('-id')
-
-        page = self.paginate_queryset(user_snippets)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(user_snippets, many=True)
-        return Response(serializer.data)
+        return self.paginated_response(user_snippets)
 
     @action(methods=["get"], detail=False, url_path='me/snippets', url_name="my-snippets")
     def get_current_user_snippets(self, request):
         """Get snippets created by currently logged user."""
 
         user_snippets = Snippet.objects.all().filter(user=request.user).order_by('-id')
-
-        page = self.paginate_queryset(user_snippets)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(user_snippets, many=True)
-        return Response(serializer.data)
+        return self.paginated_response(user_snippets)

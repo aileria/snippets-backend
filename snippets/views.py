@@ -138,7 +138,13 @@ class FileViewSet(BaseModelViewSet):
 
 
 @extend_schema_view(
-    list=extend_schema(description='Get list of snippet\'s comments.'),
+    list=extend_schema(description='Get list of snippet\'s comments.', parameters=[
+        OpenApiParameter(
+            name='page',
+            type=str,
+            location=OpenApiParameter.QUERY,
+            required=False,
+        )]),
     create=extend_schema(description='Create snippet\'s comment.'),
     destroy=extend_schema(description='Delete snippet\'s comment.'),
 )
